@@ -1,0 +1,504 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ElectroFix | Venta y reparación de electrodomésticos</title>
+  <meta name="description" content="Venta de electrodomésticos nuevos y reparación de lavadoras, frigoríficos, hornos y más. Presupuesto sin compromiso.">
+  <style>
+    :root {
+      --primario: #0b5ed7;
+      --primario-osc: #0846a3;
+      --acento: #ffb703;
+      --texto: #1f2933;
+      --texto-suave: #52606d;
+      --fondo: #ffffff;
+      --fondo-alt: #f3f6fa;
+      --borde: #e1e7ef;
+      --radio: 12px;
+      --sombra: 0 6px 20px rgba(15, 40, 80, 0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: var(--texto);
+      background: var(--fondo);
+      line-height: 1.6;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    .contenedor { width: min(1100px, 100% - 32px); margin-inline: auto; }
+    section { padding: 72px 0; }
+    h1, h2, h3 { line-height: 1.2; }
+    h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 12px; text-align: center; }
+    .subtitulo { text-align: center; color: var(--texto-suave); max-width: 620px; margin: 0 auto 40px; }
+
+    .btn {
+      display: inline-block; padding: 12px 24px; border-radius: 999px;
+      font-weight: 600; border: 2px solid transparent; cursor: pointer;
+      transition: transform .15s, background .2s, color .2s;
+      font-size: 1rem;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primario { background: var(--acento); color: #1a1a1a; }
+    .btn-primario:hover { background: #ffa600; }
+    .btn-secundario { border-color: #fff; color: #fff; }
+    .btn-secundario:hover { background: #fff; color: var(--primario); }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,.95); backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--borde);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .logo { font-weight: 800; font-size: 1.35rem; color: var(--primario); }
+    .logo span { color: var(--acento); }
+    .nav ul { list-style: none; display: flex; gap: 28px; }
+    .nav ul a { font-weight: 500; color: var(--texto-suave); }
+    .nav ul a:hover { color: var(--primario); }
+    .menu-btn {
+      display: none; background: none; border: 0; font-size: 1.8rem; cursor: pointer; color: var(--texto);
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--primario), var(--primario-osc));
+      color: #fff; padding: 96px 0;
+    }
+    .hero .contenedor { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); margin-bottom: 16px; }
+    .hero p { font-size: 1.15rem; opacity: .92; margin-bottom: 28px; }
+    .hero-botones { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-datos { display: flex; gap: 32px; margin-top: 36px; flex-wrap: wrap; }
+    .hero-datos strong { display: block; font-size: 1.6rem; color: var(--acento); }
+    .hero-visual {
+      background: rgba(255,255,255,.1); border-radius: 24px; padding: 32px;
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+    }
+    .hero-visual div {
+      background: rgba(255,255,255,.15); border-radius: 16px; aspect-ratio: 1;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: 2.6rem; gap: 6px;
+    }
+    .hero-visual small { font-size: .85rem; }
+
+    /* Servicios */
+    .grid { display: grid; gap: 24px; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .tarjeta {
+      background: var(--fondo); border: 1px solid var(--borde); border-radius: var(--radio);
+      padding: 28px; box-shadow: var(--sombra); transition: transform .2s;
+    }
+    .tarjeta:hover { transform: translateY(-4px); }
+    .icono {
+      width: 56px; height: 56px; border-radius: 14px; background: var(--fondo-alt);
+      display: grid; place-items: center; font-size: 1.7rem; margin-bottom: 16px;
+    }
+    .tarjeta h3 { margin-bottom: 8px; }
+    .tarjeta p { color: var(--texto-suave); }
+
+    /* Productos */
+    .alt { background: var(--fondo-alt); }
+    .filtros { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
+    .filtro {
+      padding: 8px 18px; border-radius: 999px; border: 1px solid var(--borde);
+      background: #fff; cursor: pointer; font-weight: 500; font-size: .95rem;
+    }
+    .filtro.activo { background: var(--primario); color: #fff; border-color: var(--primario); }
+    .producto { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+    .producto .img {
+      height: 150px; background: linear-gradient(135deg, #e7eef8, #d4e1f3);
+      display: grid; place-items: center; font-size: 3.5rem;
+    }
+    .producto .info { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+    .producto .etiqueta { font-size: .8rem; color: var(--primario); font-weight: 600; text-transform: uppercase; }
+    .producto h3 { font-size: 1.05rem; margin: 4px 0 8px; }
+    .precio { font-size: 1.4rem; font-weight: 800; margin-top: auto; }
+    .precio del { font-size: .95rem; color: var(--texto-suave); font-weight: 400; margin-left: 6px; }
+    .producto .btn { margin-top: 14px; text-align: center; background: var(--primario); color: #fff; font-size: .95rem; padding: 10px; }
+    .producto .btn:hover { background: var(--primario-osc); }
+
+    /* Pasos */
+    .pasos { counter-reset: paso; }
+    .paso { text-align: center; padding: 12px; }
+    .paso::before {
+      counter-increment: paso; content: counter(paso);
+      display: grid; place-items: center; margin: 0 auto 16px;
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--primario); color: #fff; font-weight: 800; font-size: 1.3rem;
+    }
+    .paso p { color: var(--texto-suave); }
+
+    /* FAQ */
+    .faq { max-width: 760px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid var(--borde); }
+    .faq-pregunta {
+      width: 100%; text-align: left; background: none; border: 0; padding: 20px 0;
+      font-size: 1.05rem; font-weight: 600; cursor: pointer; color: var(--texto);
+      display: flex; justify-content: space-between; gap: 16px;
+    }
+    .faq-pregunta span { transition: transform .2s; color: var(--primario); }
+    .faq-item.abierto .faq-pregunta span { transform: rotate(45deg); }
+    .faq-respuesta { max-height: 0; overflow: hidden; transition: max-height .3s ease; color: var(--texto-suave); }
+    .faq-respuesta p { padding-bottom: 20px; }
+
+    /* Contacto */
+    .contacto-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; }
+    .contacto-info li { list-style: none; display: flex; gap: 12px; margin-bottom: 18px; }
+    .contacto-info strong { display: block; }
+    form { display: grid; gap: 14px; }
+    .fila { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    label { font-weight: 600; font-size: .9rem; display: block; margin-bottom: 4px; }
+    input, select, textarea {
+      width: 100%; padding: 12px 14px; border: 1px solid var(--borde); border-radius: 10px;
+      font: inherit; background: #fff;
+    }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--primario); border-color: transparent; }
+    .error { color: #c81e1e; font-size: .85rem; min-height: 1em; }
+    .mensaje-ok {
+      display: none; background: #e6f6ec; color: #146c2e; padding: 14px; border-radius: 10px; font-weight: 500;
+    }
+
+    /* Footer */
+    footer { background: #0f1b2d; color: #c9d3e0; padding: 40px 0; text-align: center; font-size: .95rem; }
+    footer .logo { display: inline-block; margin-bottom: 8px; color: #fff; }
+
+    /* Botón flotante */
+    .flotante {
+      position: fixed; right: 20px; bottom: 20px; width: 58px; height: 58px; border-radius: 50%;
+      background: #25d366; color: #fff; display: grid; place-items: center; font-size: 1.6rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,.2); z-index: 60;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: 1fr; }
+      .hero .contenedor, .contacto-grid { grid-template-columns: 1fr; }
+      .hero-visual { max-width: 380px; }
+    }
+    @media (max-width: 720px) {
+      .menu-btn { display: block; }
+      .nav ul {
+        position: absolute; top: 68px; left: 0; right: 0; background: #fff;
+        flex-direction: column; gap: 0; border-bottom: 1px solid var(--borde);
+        display: none;
+      }
+      .nav ul.abierto { display: flex; }
+      .nav ul li a { display: block; padding: 14px 16px; }
+      .nav .btn-primario { display: none; }
+      .fila { grid-template-columns: 1fr; }
+      section { padding: 56px 0; }
+    }
+    @media (max-width: 520px) {
+      .grid-4 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabecera -->
+  <header>
+    <div class="contenedor nav">
+      <a href="#inicio" class="logo">Electro<span>Fix</span></a>
+      <ul id="menu">
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#productos">Productos</a></li>
+        <li><a href="#como-funciona">Cómo funciona</a></li>
+        <li><a href="#faq">Preguntas</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <a href="#contacto" class="btn btn-primario">Pedir presupuesto</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Abrir menú">☰</button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="inicio">
+    <div class="contenedor">
+      <div>
+        <h1>Tus electrodomésticos, como nuevos o nuevos de verdad</h1>
+        <p>Reparamos lavadoras, frigoríficos, hornos y más en tu domicilio. Y si toca cambiar, te ofrecemos equipos nuevos con instalación incluida.</p>
+        <div class="hero-botones">
+          <a href="#contacto" class="btn btn-primario">Solicitar reparación</a>
+          <a href="#productos" class="btn btn-secundario">Ver productos</a>
+        </div>
+        <div class="hero-datos">
+          <div><strong>24-48 h</strong>Tiempo de visita</div>
+          <div><strong>3 meses</strong>Garantía en reparaciones</div>
+          <div><strong>0 €</strong>Presupuesto</div>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div>🧺<small>Lavadoras</small></div>
+        <div>🧊<small>Frigoríficos</small></div>
+        <div>🔥<small>Hornos</small></div>
+        <div>🍽️<small>Lavavajillas</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Servicios -->
+  <section id="servicios">
+    <div class="contenedor">
+      <h2>Nuestros servicios</h2>
+      <p class="subtitulo">Todo lo que necesitas para tu cocina y tu hogar, en un solo sitio.</p>
+      <div class="grid grid-3">
+        <article class="tarjeta">
+          <div class="icono">🔧</div>
+          <h3>Reparación a domicilio</h3>
+          <p>Técnicos cualificados que diagnostican y reparan en tu casa. Trabajamos con las principales marcas del mercado.</p>
+        </article>
+        <article class="tarjeta">
+          <div class="icono">🛒</div>
+          <h3>Venta de electrodomésticos</h3>
+          <p>Equipos nuevos de gama blanca y pequeño electrodoméstico, con asesoramiento para elegir el que mejor encaja contigo.</p>
+        </article>
+        <article class="tarjeta">
+          <div class="icono">🚚</div>
+          <h3>Entrega e instalación</h3>
+          <p>Llevamos tu nuevo electrodoméstico, lo instalamos y retiramos el antiguo para su reciclaje.</p>
+        </article>
+        <article class="tarjeta">
+          <div class="icono">🛡️</div>
+          <h3>Mantenimiento preventivo</h3>
+          <p>Revisiones periódicas para alargar la vida de tus aparatos y evitar averías inesperadas.</p>
+        </article>
+        <article class="tarjeta">
+          <div class="icono">⚙️</div>
+          <h3>Recambios originales</h3>
+          <p>Piezas originales y compatibles con garantía: juntas, resistencias, bombas, placas y más.</p>
+        </article>
+        <article class="tarjeta">
+          <div class="icono">❄️</div>
+          <h3>Frío y climatización</h3>
+          <p>Recarga de gas, reparación de frigoríficos, congeladores y equipos de aire acondicionado.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Productos -->
+  <section class="alt" id="productos">
+    <div class="contenedor">
+      <h2>Productos destacados</h2>
+      <p class="subtitulo">Precios con IVA incluido. Consulta disponibilidad y financiación.</p>
+      <div class="filtros" id="filtros">
+        <button class="filtro activo" data-cat="todos">Todos</button>
+        <button class="filtro" data-cat="lavado">Lavado</button>
+        <button class="filtro" data-cat="frio">Frío</button>
+        <button class="filtro" data-cat="cocina">Cocina</button>
+      </div>
+      <div class="grid grid-4" id="listaProductos"></div>
+    </div>
+  </section>
+
+  <!-- Cómo funciona -->
+  <section id="como-funciona">
+    <div class="contenedor">
+      <h2>¿Cómo funciona la reparación?</h2>
+      <p class="subtitulo">Un proceso sencillo y sin sorpresas.</p>
+      <div class="grid grid-4 pasos">
+        <div class="paso"><h3>Contacta</h3><p>Rellena el formulario o llámanos contándonos la avería.</p></div>
+        <div class="paso"><h3>Visita</h3><p>Un técnico va a tu domicilio en 24-48 horas.</p></div>
+        <div class="paso"><h3>Presupuesto</h3><p>Te damos el precio cerrado antes de empezar.</p></div>
+        <div class="paso"><h3>Reparado</h3><p>Arreglamos el aparato con 3 meses de garantía.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="alt" id="faq">
+    <div class="contenedor">
+      <h2>Preguntas frecuentes</h2>
+      <p class="subtitulo">Si tienes otra duda, escríbenos.</p>
+      <div class="faq">
+        <div class="faq-item">
+          <button class="faq-pregunta">¿Cuánto cuesta el desplazamiento? <span>+</span></button>
+          <div class="faq-respuesta"><p>El desplazamiento y diagnóstico tienen un coste fijo que se descuenta del total si aceptas la reparación.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-pregunta">¿Qué marcas reparáis? <span>+</span></button>
+          <div class="faq-respuesta"><p>Trabajamos con la mayoría de marcas de gama blanca. Indícanos marca y modelo al pedir cita y te confirmamos.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-pregunta">¿Merece la pena reparar o mejor comprar uno nuevo? <span>+</span></button>
+          <div class="faq-respuesta"><p>Te lo decimos con sinceridad tras el diagnóstico: si la reparación no compensa por antigüedad o coste, te proponemos alternativas nuevas.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-pregunta">¿Ofrecéis financiación? <span>+</span></button>
+          <div class="faq-respuesta"><p>Sí, en la compra de electrodomésticos nuevos puedes pagar a plazos. Pregúntanos las condiciones.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contacto">
+    <div class="contenedor contacto-grid">
+      <div>
+        <h2 style="text-align:left">Pide tu presupuesto</h2>
+        <p style="color:var(--texto-suave);margin-bottom:28px">Cuéntanos qué necesitas y te respondemos en menos de 24 horas.</p>
+        <ul class="contacto-info">
+          <li>📞 <div><strong>Teléfono</strong>600 000 000</div></li>
+          <li>✉️ <div><strong>Email</strong>info@tudominio.com</div></li>
+          <li>📍 <div><strong>Dirección</strong>Calle Ejemplo 12, Tu ciudad</div></li>
+          <li>🕘 <div><strong>Horario</strong>Lunes a viernes 9:00–20:00 · Sábados 10:00–14:00</div></li>
+        </ul>
+      </div>
+      <form id="formContacto" novalidate>
+        <div class="fila">
+          <div>
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre">
+            <div class="error" data-error="nombre"></div>
+          </div>
+          <div>
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="600 000 000">
+            <div class="error" data-error="telefono"></div>
+          </div>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="tu@email.com">
+          <div class="error" data-error="email"></div>
+        </div>
+        <div class="fila">
+          <div>
+            <label for="tipo">Necesito</label>
+            <select id="tipo" name="tipo">
+              <option value="reparacion">Reparación</option>
+              <option value="compra">Comprar electrodoméstico</option>
+              <option value="mantenimiento">Mantenimiento</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+          <div>
+            <label for="aparato">Aparato</label>
+            <select id="aparato" name="aparato">
+              <option>Lavadora</option>
+              <option>Frigorífico</option>
+              <option>Lavavajillas</option>
+              <option>Horno / Vitrocerámica</option>
+              <option>Secadora</option>
+              <option>Otro</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label for="mensaje">Describe tu consulta</label>
+          <textarea id="mensaje" name="mensaje" rows="4" placeholder="Ej.: la lavadora no centrifuga y hace ruido"></textarea>
+          <div class="error" data-error="mensaje"></div>
+        </div>
+        <button type="submit" class="btn btn-primario">Enviar solicitud</button>
+        <div class="mensaje-ok" id="mensajeOk">¡Gracias! Hemos recibido tu solicitud y te contactaremos pronto.</div>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="contenedor">
+      <a href="#inicio" class="logo">Electro<span style="color:var(--acento)">Fix</span></a>
+      <p>Venta y reparación de electrodomésticos</p>
+      <p style="margin-top:8px;opacity:.7">© <span id="anio"></span> ElectroFix. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/34600000000" class="flotante" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">💬</a>
+
+  <script>
+    // Menú móvil
+    const menuBtn = document.getElementById('menuBtn');
+    const menu = document.getElementById('menu');
+    menuBtn.addEventListener('click', () => menu.classList.toggle('abierto'));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('abierto')));
+
+    // Productos (edita esta lista con tu catálogo real)
+    const productos = [
+      { nombre: 'Lavadora 8 kg 1400 rpm A', cat: 'lavado', icono: '🧺', precio: 399, antes: 459 },
+      { nombre: 'Secadora bomba de calor 9 kg', cat: 'lavado', icono: '🌀', precio: 529 },
+      { nombre: 'Frigorífico combi No Frost 186 cm', cat: 'frio', icono: '🧊', precio: 649, antes: 719 },
+      { nombre: 'Congelador vertical 5 cajones', cat: 'frio', icono: '❄️', precio: 429 },
+      { nombre: 'Lavavajillas 60 cm 13 servicios', cat: 'lavado', icono: '🍽️', precio: 449 },
+      { nombre: 'Horno multifunción pirolítico', cat: 'cocina', icono: '🔥', precio: 489, antes: 549 },
+      { nombre: 'Placa de inducción 3 zonas', cat: 'cocina', icono: '🍳', precio: 329 },
+      { nombre: 'Microondas con grill 25 L', cat: 'cocina', icono: '📦', precio: 139 }
+    ];
+
+    const lista = document.getElementById('listaProductos');
+    const nombresCat = { lavado: 'Lavado', frio: 'Frío', cocina: 'Cocina' };
+    const euro = n => n.toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+
+    function pintarProductos(cat) {
+      const filtrados = cat === 'todos' ? productos : productos.filter(p => p.cat === cat);
+      lista.innerHTML = filtrados.map(p => `
+        <article class="tarjeta producto">
+          <div class="img">${p.icono}</div>
+          <div class="info">
+            <span class="etiqueta">${nombresCat[p.cat]}</span>
+            <h3>${p.nombre}</h3>
+            <div class="precio">${euro(p.precio)}${p.antes ? `<del>${euro(p.antes)}</del>` : ''}</div>
+            <a href="#contacto" class="btn" data-producto="${p.nombre}">Me interesa</a>
+          </div>
+        </article>`).join('');
+    }
+    pintarProductos('todos');
+
+    document.getElementById('filtros').addEventListener('click', e => {
+      const btn = e.target.closest('.filtro');
+      if (!btn) return;
+      document.querySelectorAll('.filtro').forEach(b => b.classList.remove('activo'));
+      btn.classList.add('activo');
+      pintarProductos(btn.dataset.cat);
+    });
+
+    // "Me interesa" rellena el formulario
+    lista.addEventListener('click', e => {
+      const btn = e.target.closest('[data-producto]');
+      if (!btn) return;
+      document.getElementById('tipo').value = 'compra';
+      document.getElementById('mensaje').value = `Me interesa: ${btn.dataset.producto}`;
+    });
+
+    // FAQ acordeón
+    document.querySelectorAll('.faq-pregunta').forEach(p => {
+      p.addEventListener('click', () => {
+        const item = p.parentElement;
+        const resp = item.querySelector('.faq-respuesta');
+        const abierto = item.classList.toggle('abierto');
+        resp.style.maxHeight = abierto ? resp.scrollHeight + 'px' : 0;
+      });
+    });
+
+    // Validación del formulario
+    const form = document.getElementById('formContacto');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const datos = Object.fromEntries(new FormData(form));
+      const errores = {};
+      if (!datos.nombre.trim()) errores.nombre = 'Indica tu nombre.';
+      if (!/^[0-9+\s]{9,15}$/.test(datos.telefono.trim())) errores.telefono = 'Teléfono no válido.';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(datos.email.trim())) errores.email = 'Email no válido.';
+      if (datos.mensaje.trim().length < 10) errores.mensaje = 'Cuéntanos un poco más (mín. 10 caracteres).';
+
+      form.querySelectorAll('.error').forEach(el => el.textContent = errores[el.dataset.error] || '');
+      if (Object.keys(errores).length) return;
+
+      // Aquí conectarías con tu backend o servicio de formularios
+      console.log('Solicitud enviada:', datos);
+      form.reset();
+      const ok = document.getElementById('mensajeOk');
+      ok.style.display = 'block';
+      setTimeout(() => ok.style.display = 'none', 6000);
+    });
+
+    // Año del footer
+    document.getElementById('anio').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
